@@ -19,4 +19,6 @@ Tinytest.add("event/helpers wrappers - presence", function(test) {
 Tinytest.add("event/helpers wrappers - template variable", function(test) {
   test.equal(Template.testTemplate.HELPER_EXPORTED, 569);
   test.equal(Template.testTemplate.EVENT_EXPORTED, 891);
+  test.equal(Template.testTemplate2.HELPER1_EXPORTED, 938);
+  test.equal(Template.testTemplate2.HELPER2_EXPORTED, 114);
 });

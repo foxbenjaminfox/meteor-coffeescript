@@ -25,6 +25,7 @@ Package.onTest(function (api) {
     'tests/litcoffeescript_tests.litcoffee',
     'tests/litcoffeescript_tests.coffee.md',
     'tests/testTemplate.helpers.coffee',
+    'tests/testTemplate2.helpers.coffee',
     'tests/testTemplate.events.coffee',
     'coffeescript_tests.js'
   ], ['client', 'server']);
