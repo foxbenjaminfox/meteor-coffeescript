@@ -123,7 +123,7 @@ var addWrapper = function (source, sourceMap, filepath, wrapper) {
   // functions (such as __indexOf), and the file's
   // "use strict" if it has one. We put our header
   // on the line after these.
-  source = source.replace(/^((?:(?:(['"])use strict\2;\n+)|(?:var.*;\n+))+)/,
+  source = source.replace(/^((?:(?:(['"])use strict\2;\n+)|(?:var.*;\n+))*)/,
     '$1' + header);
 
   // Coffescript would normally open a file whose body is an 
