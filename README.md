@@ -9,6 +9,20 @@ CoffeeScript is supported on both the client and the server. Files
 ending with `.coffee`, `.litcoffee`, or `.coffee.md` are automatically
 compiled to JavaScript.
 
+This is a fork of the core Meteor `coffeescript` package. As the per the [Meteor wiki](https://github.com/meteor/meteor/wiki/Contributing-to-Meteor#adding-new-packages-to-meteor):
+
+> For historical reasons, some packages that really ought to be in Atmosphere are currently in core, like `less` and `coffeescript`.
+
+The goal of this fork is to fix this problem by moving the `coffeescript` package out of core, allowing the community to build on it without having to go through the Meteor release cycle.
+
+### Unwrapped helpers and events
+
+Inspired by the `mquandalle:jade` package, `coffee:script` allows you to keep each template's events and helpers in their own files while avoiding boilerplate.
+
+Just as `mquandalle:jade` let's you [define your templates unwrapped](https://github.com/mquandalle/meteor-jade#unwrapped-templates) using `.tpl.jade` files, `coffee:script` lets you do the same with events and helpers in `.events.coffee` and `.helpers.coffee` files, respectively.
+
+Without this feature, you'd have to wrap your template's helpers and events in `Template.<name>.events ->` or `Template.<name>.helpers ->` blocks, thus repeating yourself and adding needless boilerplate to your code. But using `coffee:script`, if you save your helpers object in a file called `<name>.helpers.coffee`, that bit of boilerplate will be handled for you. This allows you to follow the "don't repeat yourself" (DRY) philosophy in the same way you may have gotten used to while using `mquandalle:jade`.
+
 ### Namespacing and CoffeeScript
 
 Here's how CoffeeScript works with Meteor's namespacing.
