@@ -119,18 +119,12 @@ var addWrapper = function (source, sourceMap, filepath, wrapper) {
 
   var header = "Template." + name + "." + wrapper;
 
-  source = source.replace(/^(?:((['"])use strict\2;)\n)?/, function (match, useStrict) {
-    if (match) {
-      // There's a "use strict"; we'll add our header in the
-      // first line we insert after it, in order not to mess up
-      // the addSharedHeader function.
-      return useStrict + "\n" + header;
-    } else {
-      // There's no "use strict", so we can just add the header
-      // at the beginning of the file.
-      return header;
-    }
-  });
+  // We find all instances of CoffeeScripts's helper
+  // functions (such as __indexOf), and the file's
+  // "use strict" if it has one. We put our header
+  // on the line after these.
+  source = source.replace(/^((?:(?:(['"])use strict\2;\n+)|(?:var.*;\n+))+)/,
+    '$1' + header);
 
   // Coffescript would normally open a file whose body is an 
   // object with a "({" line. We add our header on this line,
