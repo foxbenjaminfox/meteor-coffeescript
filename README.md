@@ -21,7 +21,7 @@ Inspired by the `mquandalle:jade` package, `coffee:script` allows you to keep ea
 
 Just as `mquandalle:jade` let's you [define your templates unwrapped](https://github.com/mquandalle/meteor-jade#unwrapped-templates) using `.tpl.jade` files, `coffee:script` lets you do the same with events and helpers in `.events.coffee` and `.helpers.coffee` files, respectively.
 
-Without this feature, you'd have to wrap your template's helpers and events in `Template.<name>.events ->` or `Template.<name>.helpers ->` blocks, thus repeating yourself and adding needless boilerplate to your code. But using `coffee:script`, if you save your helpers object in a file called `<name>.helpers.coffee`, that bit of boilerplate will be handled for you. This allows you to follow the "don't repeat yourself" (DRY) philosophy in the same way you may have gotten used to while using `mquandalle:jade`.
+Without this feature, you'd have to wrap your template's helpers and events in `Template.<name>.events` or `Template.<name>.helpers` blocks, thus repeating yourself and adding needless boilerplate to your code. But using `coffee:script`, if you save your helpers object in a file called `<name>.helpers.coffee`, that bit of boilerplate will be handled for you. This allows you to follow the "don't repeat yourself" (DRY) philosophy in the same way you may have gotten used to while using `mquandalle:jade`.
 
 ### Namespacing and CoffeeScript
 
