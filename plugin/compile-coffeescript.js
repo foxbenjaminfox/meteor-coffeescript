@@ -113,11 +113,24 @@ var addSharedHeader = function (source, sourceMap) {
   };
 };
 
+var addCoffeeWrapper = function (source, filepath, wrapper) {
+  // Find the file's name from the filepath
+  name = path.basename(filepath, '.' + wrapper + '.coffee');
+
+  var header = "Template." + name + '.';
+
+  
+  source = source.replace(/^(events|helpers|onRendered|onCreated|onDestroyed)/mg,
+    header + '$1');
+
+  return source;
+}
+
 var addWrapper = function (source, sourceMap, filepath, wrapper) {
   // Find the file's name from the filepath
   name = path.basename(filepath, '.' + wrapper + '.coffee');
 
-  var header = "Template." + name + "." + wrapper;
+  var header = "Template." + name + '.' + wrapper;
 
   // We find all instances of CoffeeScripts's helper
   // functions (such as __indexOf), and the file's
@@ -136,7 +149,7 @@ var addWrapper = function (source, sourceMap, filepath, wrapper) {
   };
 }
 
-var handler = function (compileStep, isLiterate, templateWrapper) {
+var handler = function (compileStep, isLiterate, templateWrapper, templateCoffeeWrapper) {
   var source = compileStep.read().toString('utf8');
   var outputFile = compileStep.inputPath + ".js";
 
@@ -153,6 +166,12 @@ var handler = function (compileStep, isLiterate, templateWrapper) {
     // This becomes the "sources" field of the source map.
     sourceFiles: [compileStep.pathForSourceMap]
   };
+
+  if (templateCoffeeWrapper){
+    console.log(source)
+    source = addCoffeeWrapper(source, compileStep.inputPath, templateCoffeeWrapper)
+    console.log(source)
+  }
 
   try {
     var output = coffee.compile(source, options);
@@ -196,8 +215,13 @@ var eventsHandler = function (compileStep) {
   return handler(compileStep, false, 'events');
 };
 
+var tplHandler = function (compileStep) {
+  return handler(compileStep, false, false, 'tpl');
+};
+
 Plugin.registerSourceHandler("coffee", handler);
 Plugin.registerSourceHandler("litcoffee", literateHandler);
 Plugin.registerSourceHandler("coffee.md", literateHandler);
 Plugin.registerSourceHandler("helpers.coffee", helpersHandler);
 Plugin.registerSourceHandler("events.coffee", eventsHandler);
+Plugin.registerSourceHandler("tpl.coffee", tplHandler);
