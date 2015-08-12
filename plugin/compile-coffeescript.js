@@ -113,13 +113,18 @@ var addSharedHeader = function (source, sourceMap) {
   };
 };
 
-var addCoffeeWrapper = function (source, filepath, wrapper) {
+var tplWrapper = function (source, filepath) {
   // Find the file's name from the filepath
-  name = path.basename(filepath, '.' + wrapper + '.coffee');
+  name = path.basename(filepath, '.tpl.coffee');
 
   var header = "Template." + name + '.';
 
-  
+  // prefix Tmplate.<name>. to each line that starts with events, helpers, etc.
+  // Alternative implementation would be to add the follwing 
+  // to the beginning of the file the following:
+  //   events = Template.<name>.events
+  //   helpers = Template.<name>.helpers
+  // etc.
   source = source.replace(/^(events|helpers|onRendered|onCreated|onDestroyed)/mg,
     header + '$1');
 
@@ -130,7 +135,7 @@ var addWrapper = function (source, sourceMap, filepath, wrapper) {
   // Find the file's name from the filepath
   name = path.basename(filepath, '.' + wrapper + '.coffee');
 
-  var header = "Template." + name + '.' + wrapper;
+  var header = "Template." + name + "." + wrapper;
 
   // We find all instances of CoffeeScripts's helper
   // functions (such as __indexOf), and the file's
@@ -149,7 +154,7 @@ var addWrapper = function (source, sourceMap, filepath, wrapper) {
   };
 }
 
-var handler = function (compileStep, isLiterate, templateWrapper, templateCoffeeWrapper) {
+var handler = function (compileStep, isLiterate, templateWrapper, tplWrapper) {
   var source = compileStep.read().toString('utf8');
   var outputFile = compileStep.inputPath + ".js";
 
@@ -167,10 +172,8 @@ var handler = function (compileStep, isLiterate, templateWrapper, templateCoffee
     sourceFiles: [compileStep.pathForSourceMap]
   };
 
-  if (templateCoffeeWrapper){
-    console.log(source)
-    source = addCoffeeWrapper(source, compileStep.inputPath, templateCoffeeWrapper)
-    console.log(source)
+  if (tplWrapper){
+    source = addCoffeeWrapper(source, compileStep.inputPath)
   }
 
   try {
@@ -216,7 +219,7 @@ var eventsHandler = function (compileStep) {
 };
 
 var tplHandler = function (compileStep) {
-  return handler(compileStep, false, false, 'tpl');
+  return handler(compileStep, false, false, true);
 };
 
 Plugin.registerSourceHandler("coffee", handler);
