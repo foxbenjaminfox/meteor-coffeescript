@@ -113,7 +113,7 @@ var addSharedHeader = function (source, sourceMap) {
   };
 };
 
-var tplWrapper = function (source, filepath) {
+var tplCoffeeWrapper = function (source, filepath) {
   // Find the file's name from the filepath
   name = path.basename(filepath, '.tpl.coffee');
 
@@ -173,7 +173,7 @@ var handler = function (compileStep, isLiterate, templateWrapper, tplWrapper) {
   };
 
   if (tplWrapper){
-    source = addCoffeeWrapper(source, compileStep.inputPath)
+    source = tplCoffeeWrapper(source, compileStep.inputPath)
   }
 
   try {
