@@ -1,6 +1,6 @@
 var fs = Npm.require('fs');
 var path = Npm.require('path');
-var coffee = Npm.require('coffee-script');
+var coffee = Npm.require('coffeescript');
 var _ = Npm.require('underscore');
 var sourcemap = Npm.require('source-map');
 
