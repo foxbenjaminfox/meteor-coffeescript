@@ -113,6 +113,24 @@ var addSharedHeader = function (source, sourceMap) {
   };
 };
 
+var tplCoffeeWrapper = function (source, filepath) {
+  // Find the file's name from the filepath
+  name = path.basename(filepath, '.tpl.coffee');
+
+  var header = "Template." + name + '.';
+
+  // prefix Tmplate.<name>. to each line that starts with events, helpers, etc.
+  // Alternative implementation would be to add the follwing 
+  // to the beginning of the file the following:
+  //   events = Template.<name>.events
+  //   helpers = Template.<name>.helpers
+  // etc.
+  source = source.replace(/^(events|helpers|onRendered|onCreated|onDestroyed)/mg,
+    header + '$1');
+
+  return source;
+}
+
 var addWrapper = function (source, sourceMap, filepath, wrapper) {
   // Find the file's name from the filepath
   name = path.basename(filepath, '.' + wrapper + '.coffee');
@@ -136,7 +154,7 @@ var addWrapper = function (source, sourceMap, filepath, wrapper) {
   };
 }
 
-var handler = function (compileStep, isLiterate, templateWrapper) {
+var handler = function (compileStep, isLiterate, templateWrapper, tplWrapper) {
   var source = compileStep.read().toString('utf8');
   var outputFile = compileStep.inputPath + ".js";
 
@@ -153,6 +171,10 @@ var handler = function (compileStep, isLiterate, templateWrapper) {
     // This becomes the "sources" field of the source map.
     sourceFiles: [compileStep.pathForSourceMap]
   };
+
+  if (tplWrapper){
+    source = tplCoffeeWrapper(source, compileStep.inputPath)
+  }
 
   try {
     var output = coffee.compile(source, options);
@@ -196,8 +218,13 @@ var eventsHandler = function (compileStep) {
   return handler(compileStep, false, 'events');
 };
 
+var tplHandler = function (compileStep) {
+  return handler(compileStep, false, false, true);
+};
+
 Plugin.registerSourceHandler("coffee", handler);
 Plugin.registerSourceHandler("litcoffee", literateHandler);
 Plugin.registerSourceHandler("coffee.md", literateHandler);
 Plugin.registerSourceHandler("helpers.coffee", helpersHandler);
 Plugin.registerSourceHandler("events.coffee", eventsHandler);
+Plugin.registerSourceHandler("tpl.coffee", tplHandler);
