@@ -1,7 +1,7 @@
 Package.describe({
   name: "coffee:script",
   summary: "Javascript dialect with fewer braces and semicolons",
-  version: "1.1.0",
+  version: "1.2.0",
   git: "https://github.com/foxbenjaminfox/meteor-coffeescript.git"
 });
 
@@ -12,8 +12,8 @@ Package.registerBuildPlugin({
     'plugin/compile-coffeescript.js'
   ],
   npmDependencies: {
-    "coffeescript": "2.2.4",
-    "source-map": "0.7.2"
+    "coffeescript": "2.7.0",
+    "source-map": "0.7.4"
   }
 });
 
